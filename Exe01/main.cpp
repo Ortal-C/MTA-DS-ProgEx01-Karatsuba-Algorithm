@@ -1,7 +1,8 @@
 /**********************************************************************************
  ********************* MTA DATA STRUCTURES COURSE PROJECT 1 ***********************
- ***************** LONG-MULTIPLICATION AND KARATSUBA ALGORITHM. *******************
+ *********** TRADITIONAL LONG-MULTIPLICATION AND KARATSUBA ALGORITHM. *************
  ********************************************************************************** /
+
 
 /*  The program recieves: non-negative n- integer and 2 n-digits numbers x and y.
     The program multiplies x and y and calculates the result in 3 ways:
