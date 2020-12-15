@@ -146,8 +146,8 @@ void longMulAlgorithm(vector<int>& resVector, const vector<int>& x, const vector
     for two n-digits integers x,y =>	  x = a*10^n/2 + b	    ,	  y = c*10^n/2 + d
     x*y = (a*c)*10^n  +  ((a+b)*(c+d)-a*c-b*d)*10^n/2  +  b*d
     NOTE: determine:    sec1 = a*c;
-				    sec2 = (a+b)*(c+d)-a*c-b*d
-				    sec3 = b*d										   */
+			sec2 = (a+b)*(c+d)-a*c-b*d
+			sec3 = b*d										   */
 void karatsubaRec(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 {
     //--- Base case: x and y have only one-cell. ---//
@@ -210,8 +210,8 @@ void karatsubaRec(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
     for two n-digits integers x,y =>	  x = a*10^n/2 + b	    ,	  y = c*10^n/2 + d
     x*y = (a*c)*10^n  +  ((a+b)*(c+d)-a*c-b*d)*10^n/2  +  b*d
     NOTE: determine:    sec1 = a*c
-				    sec2 = b*d
-				    sec3 = (a+b)*(c+d)-a*c-b*d						   */
+    			sec2 = b*d
+			sec3 = (a+b)*(c+d)-a*c-b*d						   */
 void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 {
     Stack s;
@@ -462,8 +462,8 @@ int main()
 
     cout << SEPARATOR << "\nThe results of multipication entered numbers:\n" << SEPARATOR << endl;
 
-    /*  NOTE:	 The printed-output should not contain leading zeros.
-			 However, the result-vector of each algorithm can contain leading zeros.   */
+    /*  NOTE:	The printed-output should not contain leading zeros.
+    		However, the result-vector of each algorithm can contain leading zeros.   */
 
     //-------------------------------------------------------------------------------------------//
     //------------------ PERFORMING LONG MULTIPICATION ALGORITHM FUNCTION -----------------------//
