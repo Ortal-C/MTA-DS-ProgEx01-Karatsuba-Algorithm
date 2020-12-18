@@ -3,22 +3,18 @@
  *********** TRADITIONAL LONG-MULTIPLICATION AND KARATSUBA ALGORITHM. *************
  ********************************************************************************** /
 
-
-/*  The program recieves: non-negative n- integer and 2 n-digits numbers x and y.
+/*  The program recieves non-negative n integer and 2 n-digits numbers x and y.
     The program multiplies x and y and calculates the result in 3 ways:
-	   (1) Long multiplication
-	   (2) Karatsub'a algorithm (Recursive)
-	   (3) Karatsub'a algorithm (Iterative)								            */
+    (1) Long multiplication
+    (2) Karatsub'a algorithm (Recursive)
+    (3) Karatsub'a algorithm (Iterative)								            */
 
-	   //-------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------//
 
 #include <iostream>
-#include "Stack.h"
 #include <vector> 
-#include <string> 
-#include <chrono>
-#include <fstream>
-#include <iomanip>
+#include <string>
+#include "Stack.h"
 using namespace std;
 
 //--------------------------------------- CONST VALUES --------------------------------------//
@@ -26,7 +22,7 @@ const char* SEPARATOR =
 "---------------------------------------------------------------------------------";
 
 #define BASE 10 
-enum SEC { SEC1_CALC = 1, SEC2_CALC, SEC3_CALC, FINAL_RESULT_CALC };
+enum SEC{SEC1_CALC=1, SEC2_CALC, SEC3_CALC, FINAL_RESULT_CALC};
 
 //----------------------------------- FUNCTIONS DECLARATIONS --------------------------------//
 
@@ -34,7 +30,9 @@ void inputError();
 void factorReader(vector<int>& theVector, const int& numOfDigits);
 void printVector(const vector<int>& resVector, const char* msg);
 void longMulAlgorithm(vector<int>& resVector, const vector<int>& x, const vector<int>& y, int n);
+void karatsubaRecOut(const vector<int>& x,const vector<int>& y, int n, vector<int>& resVector);
 void karatsubaRec(vector<int>& x, vector<int>& y, int n, vector<int>& resVector);
+void karatsubaItrOut(const vector<int>& x, const vector<int>& y, int n, vector<int>& resVector);
 void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector);
 void shiftLeft(vector<int>& res, int shift);
 void sumOfVectors(vector<int>& resultVector, vector<int>& toAdd);
@@ -45,31 +43,31 @@ void mergeVectors(vector<int>& dest, const vector<int>& v1, const vector<int>& v
 
 void inputError()
 {
-    cout << "wrong input.\n";
+    cout << "wrong input.\n"
     exit(1);
 }
 
 //-------------------------------------------------------------------------------------------//
 
 /*  Function reads an integer into a given vector.
-    NOTE:	  the given numOfDigits is a positive integer.theVector would be in length
+    NOTE: the given numOfDigits is a positive integer.theVector would be in length
     of numOfDigits.(= exercise's assumption.)								   */
 void factorReader(vector<int>& theVector, const int& numOfDigits)
 {
     string str;
-    cout << "Please enter " << numOfDigits
-	   << " digits number and then press enter (please include leading-zeros if needed)." << endl;
+    cout << "Please enter " << numOfDigits 
+	    << " digits number and then press enter (please include leading-zeros if needed)." << endl;
 
     getline(cin, str);
 
     //validation for input size.
-    if (str.size() != numOfDigits)
+    if (str.size() != numOfDigits) 
 	   inputError();
 
     //validation for each digit in factor.
     for (int i = 0; i < numOfDigits; i++)
     {
-	   if (str[i] - '0' < 0 || str[i] - '0' > 9)
+	   if (str[i] - '0' < 0 || str[i] - '0' > 9)	  
 		  inputError();
 
 	   //if here current digit is valid and can place digit in vector.
@@ -94,7 +92,7 @@ void printVector(vector<int>& resVector, const char* msg)
 	   else
 		  nonZeroAppeard = true;
     }
-
+    
     cout << msg;
     if (!nonZeroAppeard)
 	   cout << 0;
@@ -105,26 +103,29 @@ void printVector(vector<int>& resVector, const char* msg)
 
 //--------------------------- LONG MULTIPICATION ALGORITHM FUNCTION -------------------------//
 
-/*  Long multiplication implementaion algorithm.		 */
+
+/*  Long multiplication algorithm implementaion.    */
+/*  Iv'e made this algorithm efficient. the condition of (temp == 0) is saving time
+    and makes T(n)=O(n^2) insted of Theta(n^2).        */
 void longMulAlgorithm(vector<int>& resVector, const vector<int>& x, const vector<int>& y, int n)
 {
     vector<int>::iterator mostRightDigit = resVector.end() - 1;
-    //running on each digit in y number (the second one).
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++)    //running on each digit in y number (the second one).
     {
 	   int temp = y[n - i];
-	   if (temp == 0)	   //we can skip iteration, result is already 0
-		  mostRightDigit--;
-	   else
+	    if (temp == 0)	   //we can skip iteration, result is already 0
+		    mostRightDigit--;		 
+	    else					 */
 	   {
 		  int carry = 0, res;
 		  mostRightDigit = resVector.end() - i;
 		  carry = 0;
-		  //running on each digit in x number  (the first one).
-		  for (int j = 1; j <= n; j++)
+
+		  for (int j = 1; j <= n; j++)      //running on each digit in x number  (the first one).
 		  {
 			 // NOTE: res can be referred as an integer. Both temp and x[n-j] are digits so result is a maximum 2-digits number
-			 res = temp * x[n - j]; if (res > 0 || carry > 0)
+			 res = temp * x[n - j];
+			 if (res > 0 || carry > 0)
 			 {
 				*(mostRightDigit) += (res + carry);     //place digit in correct place
 				if ((carry = *mostRightDigit / BASE) > 0)
@@ -140,6 +141,7 @@ void longMulAlgorithm(vector<int>& resVector, const vector<int>& x, const vector
 }
 
 
+
 //-------------------------- KARATSUBA RECURSIVE ALGORITHM FUNCTION -------------------------//
 
 /*  Recursive function implementaion to Karatsuba's algorithm.
@@ -148,6 +150,14 @@ void longMulAlgorithm(vector<int>& resVector, const vector<int>& x, const vector
     NOTE: determine:    sec1 = a*c;
 			sec2 = (a+b)*(c+d)-a*c-b*d
 			sec3 = b*d										   */
+void karatsubaRecOut(const vector<int>& x, const vector<int>& y, int n, vector<int>& resVector)
+{
+    //keeping the original x,y const value and make copy of them.
+    vector<int> nonConstX(x);
+    vector<int> nonConstY(y);
+    karatsubaRec(nonConstX, nonConstY, n, resVector);
+}
+
 void karatsubaRec(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 {
     //--- Base case: x and y have only one-cell. ---//
@@ -197,9 +207,9 @@ void karatsubaRec(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 	   if (a.size() != c.size())    //padding with zero-leading if the sizes of a and c are different
 		  (a.size() > c.size()) ? c.insert(c.begin(), 0) : a.insert(a.begin(), 0);
 
-	   karatsubaRec(a, c, a.size(), sec2);      //recalculate Karatsuba's formula with (a+b) and (c+d) in sums (a,c)
-	   subVectors(sec2, sumSec1Sec3);       //sec2 = sec2 - (sec1 + sec3)   ( = (a+b)*(c*d)-a*c-b*d )
-	   shiftLeft(sec2, n / 2);      //multiply sec2 by 10^n/2
+	   karatsubaRec(a, c, a.size(), sec2);	 //recalculate Karatsuba's formula with (a+b) and (c+d) in sums (a,c)
+	   subVectors(sec2, sumSec1Sec3);	//sec2 = sec2 - (sec1 + sec3)   ( = (a+b)*(c*d)-a*c-b*d )
+	   shiftLeft(sec2, n / 2);		//multiply sec2 by 10^n/2
 	   sumOfVectors(resVector, sec2);
     }
 }
@@ -210,8 +220,15 @@ void karatsubaRec(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
     for two n-digits integers x,y =>	  x = a*10^n/2 + b	    ,	  y = c*10^n/2 + d
     x*y = (a*c)*10^n  +  ((a+b)*(c+d)-a*c-b*d)*10^n/2  +  b*d
     NOTE: determine:    sec1 = a*c
-    			sec2 = b*d
+			sec2 = b*d										   
 			sec3 = (a+b)*(c+d)-a*c-b*d						   */
+void karatsubaItrOut(const vector<int>& x, const vector<int>& y, int n, vector<int>& resVector)
+{
+    //keeping the original x,y const value and make copy of them..
+    vector<int> nonConstX(x);
+    vector<int> nonConstY(y);
+    karatsubaRec(nonConstX, nonConstY, n, resVector);
+}
 void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 {
     Stack s;
@@ -235,8 +252,8 @@ void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 		  int num = currX[0] * currY[0];  //Performing multiply vectors' digits => maximum case: num is a 2-digits number 
 		  if (num >= 0)
 		  {
-			 res = { num / BASE, num%BASE };
-			 currItem.setRes(res);
+			  res = { num / BASE, num%BASE };
+			  currItem.setRes(res);
 		  }
 		  //Update line and result in last call
 		  ItemType updatingItem(s.Pop().getItem());
@@ -281,9 +298,9 @@ void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 			 s.Push(nextItem);
 			 break;
 		  }
-		  case SEC3_CALC:   //calculation of (a+b)-(c+d)
+		  case SEC3_CALC:   //calculation of (a+b)*(c+d)
 		  {
-			 currItem.sec2 = currResult; //if here: we already calculate sec1 and sec2 result (a*c), (b*d) so place it in correct vector.
+			 currItem.sec2 = currResult;	//if here: we already calculate sec1 and sec2 result (a*c), (b*d) so place it in correct vector.
 			 currItem.clearVector(currResult);
 			 currItem.setRes(currResult);
 
@@ -299,15 +316,14 @@ void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 			 sumOfVectors(tmpA, currItem.b); //(a+b)
 			 vector<int> tmpC(currItem.c);
 			 sumOfVectors(tmpC, currItem.d); //(c+d)
-			 //padding with zero-leading if the sizes of tmpA and tmpC are different
-			 if (tmpA.size() != tmpC.size())
+			 if (tmpA.size() != tmpC.size())	//padding with zero-leading if the sizes of tmpA and tmpC are different
 				(tmpA.size() > tmpC.size()) ? tmpC.insert(tmpC.begin(), 0) : tmpA.insert(tmpA.begin(), 0);
 			 ItemType nextItem(tmpA, tmpC, tmpA.size(), currItem.sec3, 1);
 			 s.Push(currItem);
 			 s.Push(nextItem);
 			 break;
 		  }
-		  case FINAL_RESULT_CALC:   //calculation of (a+b)*(c+d)
+		  case FINAL_RESULT_CALC:   //summing sections
 		  {
 			 currItem.sec3 = currResult; //if here: we already calculate all sections. now we'll make adjustments for final result.
 			 currItem.clearVector(currResult);
@@ -317,12 +333,12 @@ void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 			 currItem.setRes(currResult);
 			 vector<int> currSec3(currItem.sec3);
 			 subVectors(currSec3, currItem.sec1);
-			 subVectors(currSec3, currItem.sec2); //sec3-sec1-sec2
-			 shiftLeft(currSec3, currN / 2);	 //multiply sec2 by 10^n/2
-			 currItem.sec3 = currSec3;	 //save the result of sec3
+			 subVectors(currSec3, currItem.sec2);	//sec3-sec1-sec2
+			 shiftLeft(currSec3, currN / 2);	//multiply sec2 by 10^n/2
+			 currItem.sec3 = currSec3;		//save the result of sec3
 			 sumOfVectors(currResult, currItem.sec3);
 
-			 /*  if not all sections in the original vector are calculated, we need to place this
+			 /*  	if not all sections in the original vector are calculated, we need to place this
 				currResult in correct section and move on to the  next section's calculation.
 				else: insert currResult into the original resultVector.					    */
 			 if (!s.IsEmpty())
@@ -346,7 +362,7 @@ void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 
 //-------------------------------------------------------------------------------------------//
 
-/*  Function shifting left shift time (equals to multiply result in BASE in power of shift).	  */
+/*  Function shifting left the vector given shift. (equals to multiply result in BASE in power of shift).	  */
 void shiftLeft(vector<int>& res, int shift)
 {
     unsigned int sizeOfRes = res.size();
@@ -388,7 +404,7 @@ void sumOfVectors(vector<int>& resultVector, vector<int>& toAdd)
 	   resultVector.insert(resultVector.begin(), toAdd.size() - resultVector.size(), 0);
     else
 	   toAdd.insert(toAdd.begin(), resultVector.size() - toAdd.size(), 0);
-    vector<int>::iterator currPos = resultVector.end();
+        vector<int>::iterator currPos = resultVector.end();
     for (int i = 0; i < (int)toAdd.size(); i++)
     {
 	   currPos--;
@@ -422,15 +438,13 @@ int main()
     int n;
     string str;
     cout << "Please enter non-negative integer that represents the number of digits in each number and then press enter. \n"
-	   << "NOTE: The number can't include leading-zeros." << endl;
+	    << "NOTE: The number can't include leading-zeros." << endl;
 
     getline(cin, str);
-
-
-    if (str.size() < 1)    // validation of entered number of digits and checking if there are leading-zeros.   
+	
+    // validation of entered number and checking if there are leading-zeros.
+    if (str.size() < 1)       
 	   inputError();
-    while (str[0] == ' ')    //erase all spaces characters before natural number (this is not an error).
-	   str.erase(str.begin());
     if (str[0] == '0')
     {
 	   if (str.size() == 1)
@@ -438,8 +452,7 @@ int main()
 		  cout << "This is the trivial case. None of the natural numbers has 0 digits. \n";
 		  return 0;
 	   }
-	   else
-		  inputError();   //The number can't include leading-zeros.
+	    inputError();   //The number can't include leading-zeros.
     }
 
     // validation of entered string's characters. Checking if each char is a digit. 
@@ -447,81 +460,46 @@ int main()
 	   if (str[i] - '0' < 0 || str[i] - '0' > 9)
 		  inputError();
 
-    //if here - n is a valid integer: transform string to integer.
-    n = stoi(str);
-
+    //if here - n is valid. transform string to integer.
+    n = stoi(str);    
+    
     vector<int> x;
-    cout << "\nEntering the first factor:" << endl;
+    cout << "Entering the first factor:" << endl;
     factorReader(x, n);
-    vector<int> tmpX(x);
 
     vector<int> y;
-    cout << "\nEntering the second factor:" << endl;
+    cout << "Entering the second factor:" << endl;
     factorReader(y, n);
-    vector<int> tmpY(y);
 
     cout << SEPARATOR << "\nThe results of multipication entered numbers:\n" << SEPARATOR << endl;
-
+    
     /*  NOTE:	The printed-output should not contain leading zeros.
-    		However, the result-vector of each algorithm can contain leading zeros.   */
+    		However, the result-vector of each algorithm can contain zeros.   */
 
     //-------------------------------------------------------------------------------------------//
-    //------------------ PERFORMING LONG MULTIPICATION ALGORITHM FUNCTION -----------------------//
+    //------------------ PERFORMING LONG MULTIPLICATION ALGORITHM FUNCTION ----------------------//
     //-------------------------------------------------------------------------------------------//
 
-    vector<int> resVectorLongAlgo(2 * n);   //resVectorLongAlgo contains 2n cells initialized by 0.
-    auto startLong = chrono::high_resolution_clock::now();
-    // unsync the I/O of C and C++.
-    ios_base::sync_with_stdio(false);
+    vector<int> resVectorLongAlgo(2*n);   //vector contains 2n cells initialized by 0.
     longMulAlgorithm(resVectorLongAlgo, x, y, n);
-    auto endLong = chrono::high_resolution_clock::now();
-    // Calculating total time taken by the program.
-    double time_taken_long = chrono::duration_cast<chrono::nanoseconds>(endLong - startLong).count();
-    time_taken_long *= 1e-9;
-    ofstream myfile("Measure.txt"); // The name of the file
-    myfile << "Time taken by function <longMulAlgorithm> is : " << fixed << time_taken_long << setprecision(9);
-    myfile << " sec" << endl;
     printVector(resVectorLongAlgo, "Long multiplication: x * y = ");
-
 
     //-------------------------------------------------------------------------------------------//
     //----------------------- PERFORMING KARATSUBA ALGORITHM FUNCTIONS --------------------------//
     //-------------------------------------------------------------------------------------------//
-
-    ////////////////////// PERFORMING KARATSUBA RECURSIVE ALGORITHM FUNCTION //////////////////////
+    
+    ///////////////////////// PERFORMING KARATSUBA RECURSIVE ALGORITHM ////////////////////////////
 
     vector<int> resVectorKaratsubaRec;
-    auto startRec = chrono::high_resolution_clock::now();
-    // unsync the I/O of C and C++.
-    ios_base::sync_with_stdio(false);
-    karatsubaRec(x, y, n, resVectorKaratsubaRec);
-    auto endRec = chrono::high_resolution_clock::now();
-    // Calculating total time taken by the program.
-    double time_taken_recursive = chrono::duration_cast<chrono::nanoseconds>(endRec - startRec).count();
-    time_taken_recursive *= 1e-9;
-    myfile << "Time taken by function <karatsubaRec> is : " << fixed << time_taken_recursive << setprecision(9);
-    myfile << " sec" << endl;
+    karatsubaRecOut(x, y, n, resVectorKaratsubaRec);
     printVector(resVectorKaratsubaRec, "Karatsuba (recursive): x * y = ");
-    //restore the original x and y if needed
-    x = tmpX;
-    y = tmpY;
-
-    //////////////////// PERFORMING KARATSUBA ITERATIVE ALGORITHM FUNCTION ////////////////////////
-
+    
+    ///////////////////////// PERFORMING KARATSUBA ITERATIVE ALGORITHM ////////////////////////////
+    
     vector<int> resVectorKaratsubaItr;
-    auto startItr = chrono::high_resolution_clock::now();
-    // unsync the I/O of C and C++.
-    ios_base::sync_with_stdio(false);
-    karatsubaItr(x, y, n, resVectorKaratsubaItr);
-    auto endItr = chrono::high_resolution_clock::now();
-    // Calculating total time taken by the program.
-    double time_taken_iterative = chrono::duration_cast<chrono::nanoseconds>(endItr - startItr).count();
-    time_taken_iterative *= 1e-9;
-    myfile << "Time taken by function <karatsubaRec> is : " << fixed << time_taken_iterative << setprecision(9);
-    myfile << " sec" << endl;
+    karatsubaItrOut(x, y, n, resVectorKaratsubaItr);
     printVector(resVectorKaratsubaItr, "Karatsuba (iterative): x * y = ");
-    myfile.close();
-
+    
     //-------------------------------------------------------------------------------------------//
 
     return 0;
