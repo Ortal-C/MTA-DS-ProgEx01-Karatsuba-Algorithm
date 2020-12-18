@@ -24,8 +24,8 @@ public:
     vector<int> sec3;
 
     ItemType(vector<int> a, vector<int> b, vector<int> c, vector<int> d,
-	   vector<int> sec1, vector<int>sec2, vector<int>sec3, int n, vector<int> x, vector<int> y, vector<int> res);
-    ItemType(vector<int> v1, vector<int> v2, int n, vector<int> res);
+		   vector<int> sec1, vector<int>sec2, vector<int>sec3, int n,
+		   vector<int> x, vector<int> y, vector<int> res);
     ItemType(vector<int> x, vector<int> y, int n, vector<int> res, int line);
     ~ItemType();
     
