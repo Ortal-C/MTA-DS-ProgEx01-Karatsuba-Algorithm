@@ -3,16 +3,16 @@
 //-------------------------------------------------------------------------------------------//
 
 //CONSTRUCTOR
-Stack::Stack() { top = nullptr; }
+Stack::Stack()	{ top = nullptr; }
 
 //DESTRUCTOR
-Stack::~Stack() { MakeEmpty(); }
+Stack::~Stack()	{ MakeEmpty(); }
 
 //-------------------------------------------------------------------------------------------//
 
-bool Stack::IsEmpty() const { return (top == nullptr); }
+bool Stack::IsEmpty() const	{ return (top == nullptr); }
 
-Node* Stack::Top() { return this->top; }
+Node* Stack::Top()		{ return this->top; }
 
 //-------------------------------------------------------------------------------------------//
 
