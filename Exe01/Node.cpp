@@ -4,25 +4,25 @@ using namespace std;
 //-------------------------------------------------------------------------------------------//
 
 //CONSTRUCTOR
-Node::Node(ItemType& item, Node* next) : data(item), next(next) {   }
+Node::Node(ItemType& item, Node* next) : data(item), next(next){}
 
 //COPY CONSTRUCTOR
-Node::Node(const Node& other) : data(other.data), next(other.next) {	  }
+Node::Node(const Node& other) : data(other.data), next(other.next){}
 
 //DESTRUCTOR
-Node::~Node() { }
+Node::~Node(){}
 
 //-------------------------------------------------------------------------------------------//
 
 //GETTERS
-ItemType& Node::getItem()   { return data; }
-Node* Node::getNext()	   { return next; }
+ItemType& Node::getItem()	{ return data; }
+Node* Node::getNext()		{ return next; }
 
 //-------------------------------------------------------------------------------------------//
 
 //SETTERS
-void Node::setItem(const ItemType& newItem) { this->data = newItem; }
-void Node::setNext(Node* newNext)		    { this->next = newNext; }
+void Node::setItem(const ItemType& newItem)	{ this->data = newItem; }
+void Node::setNext(Node* newNext)		{ this->next = newNext; }
 
 //-------------------------------------------------------------------------------------------//
 
