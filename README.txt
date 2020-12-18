@@ -8,6 +8,7 @@ The program multiplies x and y and calculates the result in 3 ways:
 (3) Karatsub'a algorithm (Iterative)
 
 Comments + project-assumption:
-(1) The printed-output should not contain leading zeros. However, the result-vector of each algorithm can contain leading zeros.
-(2) Can use only with <iostream>, <vector>, <string> libraries.
-(5) Each given factor would be a n-digit number and could be bigger than int, long int, etc.
+(1) The printed-output can not contain leading zeros. However, the result vector of each algorithm can contain leading zeros if needed.
+(2) Can only use with <iostream>, <vector>, <string> libraries.
+(3) Each given factor would be n-digit number and could be bigger than int, long int, etc.
+(4) Algorithms' implementations are in the Object-Oriented-Programming paradigm in C++ language.
