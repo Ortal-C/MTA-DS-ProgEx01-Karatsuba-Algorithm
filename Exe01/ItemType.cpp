@@ -31,22 +31,22 @@ ItemType::~ItemType() {}
 //-------------------------------------------------------------------------------------------//
 
 //GETTERS
-vector<int>& ItemType::getFirstNumber()		   { return x; }
-vector<int>& ItemType::getSecondNumber()	   { return y; }
-vector<int> ItemType::getRes()			   { return res; }
-int ItemType::getN()					   { return n; }
-int ItemType::getLine()					   { return line; }
+vector<int>& ItemType::getFirstNumber()		{ return x; }
+vector<int>& ItemType::getSecondNumber()	{ return y; }
+vector<int> ItemType::getRes()			{ return res; }
+int ItemType::getN()				{ return n; }
+int ItemType::getLine()				{ return line; }
 
 //-------------------------------------------------------------------------------------------//
 
 //SETTERS 
 void ItemType::setFirstNumber(vector<int>& v1)  { this->x = v1; }
 void ItemType::setSecondNumber(vector<int>& v2) { this->y = v2; }
-void ItemType::setRes(vector<int> res)		   { this->res = res; }
-void ItemType::setNumber(int n)			   { this->n = n; }
-void ItemType::setLine(int line)			   { this->line = (line); }
+void ItemType::setRes(vector<int> res)		{ this->res = res; }
+void ItemType::setNumber(int n)			{ this->n = n; }
+void ItemType::setLine(int line)		{ this->line = (line); }
 
 //-------------------------------------------------------------------------------------------//
 
 //OTHER
-void ItemType::clearVector(vector<int>& res)	   { res.clear(); }
+void ItemType::clearVector(vector<int>& res)	{ res.clear(); }
