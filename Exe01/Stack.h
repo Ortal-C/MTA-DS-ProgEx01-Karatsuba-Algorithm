@@ -2,13 +2,11 @@
 #define __STACK_H
 #include <iostream>
 #include "Node.h"
-#include "ItemType.h"
 
 class Stack
 {
 private:
     Node* top;
-
 public:
     Stack();
     ~Stack();
@@ -19,5 +17,4 @@ public:
     Node Pop();
     Node* Top();
 };
-
 #endif // !__STACK_H
