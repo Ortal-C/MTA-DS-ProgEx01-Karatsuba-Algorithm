@@ -227,7 +227,7 @@ void karatsubaItrOut(const vector<int>& x, const vector<int>& y, int n, vector<i
     //keeping the original x,y const value and make copy of them..
     vector<int> nonConstX(x);
     vector<int> nonConstY(y);
-    karatsubaRec(nonConstX, nonConstY, n, resVector);
+    karatsubaItr(nonConstX, nonConstY, n, resVector);
 }
 void karatsubaItr(vector<int>& x, vector<int>& y, int n, vector<int>& resVector)
 {
