@@ -1,4 +1,4 @@
-# MTA-Data_Structure_Course-ProgEx01
+# MTA-Data_Structure_Course-ProgEx01 #
 
 Project summary: 
 The program receives non-negative n  integer and 2 n-digits numbers x and y.
@@ -12,3 +12,5 @@ Comments + project-assumption:
 (2) Can only use with <iostream>, <vector>, <string> libraries.
 (3) Each given factor would be n-digit number and could be bigger than int, long int, etc.
 (4) Algorithms' implementations are in the Object-Oriented-Programming paradigm in C++ language.
+
+GRADE: 96/100
